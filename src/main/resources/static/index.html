@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+</head>
+<body>
+<form>
+    <label>
+        Captcha code <br>
+        <input id="captcha" type="text" style="width: 100%"><br>
+        <input id="check-captcha" type="button" value="Server check">
+    </label>
+    <label>
+        Result <br>
+        <textarea id="result" rows="20" readonly style="width: 100%"></textarea>
+    </label>
+</form>
+<script src="https://www.google.com/recaptcha/api.js?render=6LcZi8MUAAAAAJ6dlLSgNbWuIWvmEEATccVsu0Yp"></script>
+<script>
+    grecaptcha.ready(function () {
+        var tokenLocal;
+        grecaptcha.execute('6LcZi8MUAAAAAJ6dlLSgNbWuIWvmEEATccVsu0Yp', {action: 'homepage'}).then(function (token) {
+            tokenLocal = token;
+            $('#captcha').val(token);
+        });
+        $(function () {
+            $('#check-captcha')
+                .click(function () {
+                    $.ajax({
+                        url: "/check",
+                        type: "POST",
+                        contentType: "application/json",
+                        data: JSON.stringify({token: tokenLocal}),
+                        dataType: 'json',
+                        complete: function (data, status) {
+                            $('#result').val(JSON.stringify(data));
+                        }
+                    });
+                })
+        })
+    });
+</script>
+</body>
+</html>
