@@ -33,7 +33,7 @@
                         url: "/check",
                         type: "POST",
                         contentType: "application/json",
-                        data: JSON.stringify({token: tokenLocal}),
+                        data: JSON.stringify({token: tokenLocal, version: 'v3'}),
                         dataType: 'json',
                         complete: function (data, status) {
                             $('#result').val(JSON.stringify(data));
